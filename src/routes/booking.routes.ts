@@ -3,6 +3,7 @@ import {
   createBooking,
   getAllBookings,
   getBookingById,
+  updateBooking,
   updateBookingStatus,
   softDeleteBooking,
 } from "../services/booking/booking.service";
@@ -79,6 +80,27 @@ router.post(
       res
         .status(400)
         .json({ success: false, message: "Could not create booking" });
+    }
+  },
+);
+// PUT /api/bookings/:id  (general update — CUSTOMER who owns it)
+router.put(
+  "/:id",
+  authenticate,
+  authorize("CUSTOMER"),
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const { bookingDate } = req.body;
+      const booking = await updateBooking(Number(req.params.id), {
+        bookingDate: bookingDate ? new Date(bookingDate) : undefined,
+      });
+      res.json({
+        success: true,
+        message: "Booking updated successfully",
+        data: booking,
+      });
+    } catch (error) {
+      res.status(404).json({ success: false, message: "Booking not found" });
     }
   },
 );

@@ -45,3 +45,12 @@ export const softDeleteBooking = async (id: number) => {
     data: { isDeleted: true },
   });
 };
+export const updateBooking = async (
+  id: number,
+  data: { bookingDate?: Date }
+) => {
+  return prisma.booking.update({
+    where: { id },
+    data,
+  });
+};
