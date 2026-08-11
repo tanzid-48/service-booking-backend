@@ -2,8 +2,10 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import categoryRoutes from "./routes/category.routes";
+import serviceRoutes from "./routes/service.routes";
+import bookingRoutes from "./routes/booking.routes";
+import reviewRoutes from "./routes/review.routes";
 import { authenticate, AuthRequest } from "./middlewares/auth.middleware";
-import serviceRoutes from './routes/service.routes';
 
 const app = express();
 
@@ -16,7 +18,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use('/api/services', serviceRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 app.get("/api/profile", authenticate, (req: AuthRequest, res) => {
   res.json({
